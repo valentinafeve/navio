@@ -11,18 +11,16 @@
 </template>
 
 <script>
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import Day from '../components/Goal_day.vue'
+import { Plugins } from '@capacitor/core';
 
-const { Filesystem } = Plugins;
+const { Storage } = Plugins;
 
-async function fileRead() {
-  let contents = await Filesystem.readFile({
-    path: 'data.json',
-    directory: FilesystemDirectory.Documents,
-    encoding: FilesystemEncoding.UTF8
-  });
-  return contents;
+
+async function getData() {
+  const ret = await Storage.get({ key: 'data' });
+  const goals = JSON.parse(ret.value);
+  return goals;
 }
 
 export default {
@@ -38,20 +36,19 @@ export default {
     Day
   },
   mounted(){
-    fileRead().then((contents)=>{
-      var to_parse = contents.data;
-      var data = JSON.parse(to_parse);
+    var res = getData();
+    res.then((data)=>{
       for (var goal of data.goals){
-        if (this.name == goal.goal.name){
-          this.days = goal.goal.days;
-          for(var day of goal.goal.days){
+        if (this.name == goal.name){
+          this.days = goal.days;
+          for(var day of goal.days){
             if (day.value > this.maximum){
               this.maximum = day.value;
             }
           }
         }
       }
-    });
+    })
   },
 }
 </script>

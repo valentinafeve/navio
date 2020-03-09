@@ -69,10 +69,8 @@ export default {
       var thisa = this;
       var res = getData();
       res.then((data)=>{
-        console.log("to add",goal)
         thisa.goals.push(goal);
         data.goals.push(goal);
-        console.log(thisa.goals)
         saveData(data.goals)
       })
 

@@ -5,20 +5,42 @@
 
 <script>
 export default {
-  props:['value', 'max'],
+  props:['value', 'max', 'isInverted'],
   computed:{
     class_color(){
+      if (this.max == 0) {
+        if(this.isInversed){
+          return "four";
+        }
+        else{
+          return "one";
+        }
+      }
       var perc = this.value/this.max;
-      if( perc < 0.25){
+      if (!this.isInverted){
+        if( perc < 0.25){
+          return "one"
+        }
+        if( perc < 0.5){
+          return "two"
+        }
+        if( perc < 0.75){
+          return "three"
+        }
+        return "four"
+      }
+      else{
+        if( perc < 0.25){
+          return "four"
+        }
+        if( perc < 0.5){
+          return "three"
+        }
+        if( perc < 0.75){
+          return "two"
+        }
         return "one"
       }
-      if( perc < 0.5){
-        return "two"
-      }
-      if( perc < 0.75){
-        return "three"
-      }
-      return "four"
     }
   }
 }
@@ -34,15 +56,15 @@ export default {
   background-color: #19d44b;
 }
 .day.four{
-  background-color: #19d44b;
+  background-color: #00BF5F;
 }
 .day.three{
-  background-color: #63ff8d;
+  background-color: #66FF7F;
 }
 .day.two{
-  background-color: #a1ffba;
+  background-color: #93FF9B;
 }
 .day.one{
-  background-color: #e8e8e8;
+  background-color: #D3D3D3;
 }
 </style>

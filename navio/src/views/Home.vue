@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="home">
-  <GoalTable v-for="goal in goals" :key="goal.goal.name" :name="goal.goal.name">
+  <GoalTable v-for="goal in goals" :key="goal.goal.name" :name="goal.goal.name" :counter="goal.goal.counter" :isInverted="goal.goal.inverse">
   </GoalTable>
 </div>
 </template>
@@ -14,7 +14,7 @@ async function fileWrite(text) {
     await Filesystem.writeFile({
       path: 'data.json',
       data: text,
-      directory: FilesystemDirectory.Application,
+      directory: FilesystemDirectory.Data,
       encoding: FilesystemEncoding.UTF8
     })
   } catch(e) {
@@ -25,7 +25,7 @@ async function fileWrite(text) {
 async function fileRead() {
   let contents = await Filesystem.readFile({
     path: 'data.json',
-    directory: FilesystemDirectory.Application,
+    directory: FilesystemDirectory.Data,
     encoding: FilesystemEncoding.UTF8
   });
   return contents;

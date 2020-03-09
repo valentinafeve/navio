@@ -7,13 +7,13 @@
     <div class="tabs">
       <div class="buttons">
         <div class="button_tab" @click="go_to('more')">
-          <img src="/icons/info.svg" alt="" style="height:48px;">
+          <img src="/icons/info.svg" alt="" style="height:40px;">
         </div>
         <div class="button_tab" @click="go_to('/')">
-          <img src="/icons/home.svg" alt="" style="height:48px;">
+          <img src="/icons/home.svg" alt="" style="height:40px;">
         </div>
         <div class="button_tab" @click="go_to('add')">
-          <img src="/icons/clock.svg" alt="" style="height:48px;">
+          <img src="/icons/clock.svg" alt="" style="height:40px;">
         </div>
       </div>
     </div>
@@ -24,7 +24,14 @@
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import router from './router'
 
+const { StatusBar } = Plugins;
 const { Filesystem } = Plugins;
+
+StatusBar.setBackgroundColor({options:
+{  StatusBarBackgroundColorOptions : {
+  color : "#efefef",
+  }}
+});
 
 export default {
   name: 'App',
@@ -40,14 +47,14 @@ export default {
 
       Filesystem.readFile({
         path: 'data.json',
-        directory: FilesystemDirectory.Application,
+        directory: FilesystemDirectory.Data,
         encoding: FilesystemEncoding.UTF8
       }).then().catch(()=>{
         console.log("File doesn't exist.")
         Filesystem.writeFile({
           path: 'data.json',
           data: '{"goals":[]}',
-          directory: FilesystemDirectory.Application,
+          directory: FilesystemDirectory.Data,
           encoding: FilesystemEncoding.UTF8
         })
         console.log("Created.")
@@ -67,25 +74,29 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 90px;
+  margin-top: 80px;
+  position: relative;
 }
 #header{
   position: fixed;
   top: 0;
   background: rgb(0,102,189);
   color: white;
-  background: linear-gradient(90deg, rgba(0,102,189,1) 0%, rgba(0,168,255,1) 100%);
-  height: 90px;
+  background: #efefef;
+  height: 80px;
   width: 100%;
   vertical-align: middle;
   padding-top: 25px;
   font-size: 26px;
-  z-index: 30;
+  z-index: 10;
+}
+#header{
+  color: #9f9f9f;
 }
 .tabs{
   display: block;
   width: 100%;
-  background: #ffffff;
+  background: #efefef;
   bottom: 0;
   position: fixed;
 }

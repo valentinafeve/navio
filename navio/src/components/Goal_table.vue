@@ -1,10 +1,15 @@
 <template lang="html">
 <div class="goal_table">
   <div class="title">
-      {{ name }}
+      <span v-if="isInverted" class="">
+        History of {{ counter }} I've promised not to {{ name }}
+      </span>
+      <span v-else>
+        History of {{ counter }} I've promised to {{ name }}
+      </span>
   </div>
   <div class="table" >
-    <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value">
+    <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value" :isInverted="isInverted">
     </Day>
   </div>
 </div>
@@ -19,14 +24,14 @@ const { Filesystem } = Plugins;
 async function fileRead() {
   let contents = await Filesystem.readFile({
     path: 'data.json',
-    directory: FilesystemDirectory.Application,
+    directory: FilesystemDirectory.Data,
     encoding: FilesystemEncoding.UTF8
   });
   return contents;
 }
 
 export default {
-  props: ['name'],
+  props: ['name', 'counter', 'isInverted'],
   data(){
     return {
       maximum: 0,
@@ -64,12 +69,12 @@ export default {
 .table{
   display: block;
   width: 168px;
-  margin: 60px;
+  margin: 0px;
   margin-top: 120px;
   margin-bottom: 120px;
-  border-top: 2px solid #efefef;
-  border-left: 2px solid #efefef;
-  border-right: 2px solid #efefef;
+  border-top: 1px solid #efefef;
+  border-left: 1px solid #efefef;
+  border-right: 1px solid #efefef;
   transform: scale(1, -1) rotate(-90deg);
 }
 </style>

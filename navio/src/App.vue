@@ -21,10 +21,19 @@
 </template>
 
 <script>
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import router from './router'
+import { Plugins } from '@capacitor/core';
 
-const { Filesystem } = Plugins;
+const { Storage } = Plugins;
+
+function createStorage(){
+  Storage.set({
+    key: 'data',
+    value: JSON.stringify({
+      goals: [],
+    })
+  });
+}
 
 export default {
   name: 'App',
@@ -36,16 +45,7 @@ export default {
     }
   },
   created(){
-    try {
-      Filesystem.writeFile({
-        path: 'data.json',
-        data: '{"goals":[]}',
-        directory: FilesystemDirectory.Documents,
-        encoding: FilesystemEncoding.UTF8
-      })
-    } catch(e) {
-      console.error('Unable to write file', e);
-    }
+    createStorage();
   },
 }
 </script>

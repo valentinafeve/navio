@@ -13,37 +13,31 @@
     </div>
   </div>
   <div class="goals">
-    <GoalCard v-for="goal in goals" :key="goal.goal.name" :name="goal.goal.name"/>
+    <GoalCard v-for="goal in goals" :key="goal.name" :name="goal.name"/>
   </div>
 </div>
 </template>
 
 <script>
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
+import { Plugins } from '@capacitor/core';
 import GoalCard from '../components/Goal_card.vue'
 
-const { Filesystem } = Plugins;
+const { Storage } = Plugins;
 
-async function fileWrite(text) {
-  try {
-    await Filesystem.writeFile({
-      path: 'data.json',
-      data: text,
-      directory: FilesystemDirectory.Documents,
-      encoding: FilesystemEncoding.UTF8
+
+function saveData(obj){
+  Storage.set({
+    key: 'data',
+    value: JSON.stringify({
+      goals: obj,
     })
-  } catch(e) {
-    console.error('Unable to write file', e);
-  }
+  });
 }
 
-async function fileRead() {
-  let contents = await Filesystem.readFile({
-    path: 'data.json',
-    directory: FilesystemDirectory.Documents,
-    encoding: FilesystemEncoding.UTF8
-  });
-  return contents;
+async function getData() {
+  const ret = await Storage.get({ key: 'data' });
+  const goals = JSON.parse(ret.value);
+  return goals;
 }
 
 export default {
@@ -54,16 +48,8 @@ export default {
     return {
       goal_name:"",
       data:"",
-      goals: [],
+      goals: []
     }
-  },
-  mounted(){
-    fileRead().then((contents)=>{
-      var to_parse = contents.data;
-      var data = JSON.parse(to_parse);
-      this.goals = data.goals;
-      fileWrite(JSON.stringify(data))
-    });
   },
   methods:{
     add_goal(){
@@ -75,17 +61,21 @@ export default {
         ],
       }
 
+
       var goal_name = this.goal_name;
       var goal = goal_struct;
       goal.name = goal_name;
 
-      fileRead().then((contents)=>{
-        this.goals.push({goal});
-        var to_parse = contents.data;
-        var data = JSON.parse(to_parse);
-        data.goals.push({goal});
-        fileWrite(JSON.stringify(data))
-      });
+      var thisa = this;
+      var res = getData();
+      res.then((data)=>{
+        console.log("to add",goal)
+        thisa.goals.push(goal);
+        data.goals.push(goal);
+        console.log(thisa.goals)
+        saveData(data.goals)
+      })
+
     }
   }
 }

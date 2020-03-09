@@ -19,7 +19,7 @@ const { Filesystem } = Plugins;
 async function fileRead() {
   let contents = await Filesystem.readFile({
     path: 'data.json',
-    directory: FilesystemDirectory.Documents,
+    directory: FilesystemDirectory.Application,
     encoding: FilesystemEncoding.UTF8
   });
   return contents;

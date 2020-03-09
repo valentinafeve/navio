@@ -1,4 +1,4 @@
-package navio.com;
+package com.navio.app;
 
 import android.os.Bundle;
 

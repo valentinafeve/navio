@@ -1,10 +1,9 @@
 {
-  "appId": "navio.com",
+  "appId": "com.navio.app",
   "appName": "Navio",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",
   "cordova": {},
   "linuxAndroidStudioPath": "/usr/bin/android-studio"
-
 }

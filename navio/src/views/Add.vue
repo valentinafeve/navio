@@ -29,7 +29,7 @@ async function fileWrite(text) {
     await Filesystem.writeFile({
       path: 'data.json',
       data: text,
-      directory: FilesystemDirectory.Documents,
+      directory: FilesystemDirectory.Application,
       encoding: FilesystemEncoding.UTF8
     })
   } catch(e) {
@@ -40,7 +40,7 @@ async function fileWrite(text) {
 async function fileRead() {
   let contents = await Filesystem.readFile({
     path: 'data.json',
-    directory: FilesystemDirectory.Documents,
+    directory: FilesystemDirectory.Application,
     encoding: FilesystemEncoding.UTF8
   });
   return contents;
@@ -57,12 +57,15 @@ export default {
       goals: [],
     }
   },
+  created(){
+    console.log("Add page created")
+  },
   mounted(){
+    console.log("Add page mounted")
     fileRead().then((contents)=>{
       var to_parse = contents.data;
       var data = JSON.parse(to_parse);
       this.goals = data.goals;
-      fileWrite(JSON.stringify(data))
     });
   },
   methods:{
@@ -107,6 +110,10 @@ export default {
 .add .inverted_sel{
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.add{
+  padding-bottom: 80px;
 }
 
 </style>

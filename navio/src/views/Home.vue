@@ -14,7 +14,7 @@ async function fileWrite(text) {
     await Filesystem.writeFile({
       path: 'data.json',
       data: text,
-      directory: FilesystemDirectory.Documents,
+      directory: FilesystemDirectory.Application,
       encoding: FilesystemEncoding.UTF8
     })
   } catch(e) {
@@ -25,7 +25,7 @@ async function fileWrite(text) {
 async function fileRead() {
   let contents = await Filesystem.readFile({
     path: 'data.json',
-    directory: FilesystemDirectory.Documents,
+    directory: FilesystemDirectory.Application,
     encoding: FilesystemEncoding.UTF8
   });
   return contents;
@@ -40,6 +40,9 @@ export default {
     return{
       goals:[],
     }
+  },
+  created(){
+    console.log("Home created.")
   },
   mounted(){
     console.log("mounted")
@@ -59,6 +62,7 @@ export default {
 
 .home{
   padding-top: 40px;
+  padding-bottom: 80px;
 }
 
 </style>

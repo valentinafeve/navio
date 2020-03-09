@@ -1,163 +1,64 @@
 <template lang="html">
 <div class="home">
-  <table>
-    <tr v-for="week in weeks" :key="week.num">
-      <td><div :class="week.data.mon"></div></td>
-      <td><div :class="week.data.tue"></div></td>
-      <td><div :class="week.data.wed"></div></td>
-      <td><div :class="week.data.thu"></div></td>
-      <td><div :class="week.data.mon"></div></td>
-      <td><div :class="week.data.mon"></div></td>
-      <td><div :class="week.data.mon"></div></td>
-    </tr>
-  </table>
+  <GoalTable v-for="goal in goals" :key="goal.goal.name" :name="goal.goal.name">
+  </GoalTable>
 </div>
 </template>
 
 <script>
+import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
+import GoalTable from '../components/Goal_table.vue';
+
+async function fileWrite(text) {
+  try {
+    await Filesystem.writeFile({
+      path: 'data.json',
+      data: text,
+      directory: FilesystemDirectory.Documents,
+      encoding: FilesystemEncoding.UTF8
+    })
+  } catch(e) {
+    console.error('Unable to write file', e);
+  }
+}
+
+async function fileRead() {
+  let contents = await Filesystem.readFile({
+    path: 'data.json',
+    directory: FilesystemDirectory.Documents,
+    encoding: FilesystemEncoding.UTF8
+  });
+  return contents;
+}
+
+const { Filesystem } = Plugins;
 export default {
+  components:{
+    GoalTable,
+  },
   data(){
     return{
-      weeks:[
-        {
-          num: 1,
-          data:{
-            mon:"four",
-            tue:"four",
-            wed:"four",
-            thu:"four",
-            fri:"four",
-            sat:"four",
-            sun:"four",
-          }
-        },
-        {
-          num: 2,
-          data:{
-            mon:"one",
-            tue:"one",
-            wed:"two",
-            thu:"three",
-            fri:"one",
-            sat:"four",
-            sun:"one",
-          }
-        },
-        {
-          num: 3,
-          data:{
-            mon:"one",
-            tue:"three",
-            wed:"three",
-            thu:"four",
-            fri:"three",
-            sat:"three",
-            sun:"three",
-          }
-        },
-        {
-          num: 4,
-          data:{
-            mon:"three",
-            tue:"three",
-            wed:"three",
-            thu:"three",
-            fri:"three",
-            sat:"three",
-            sun:"three",
-          }
-        },
-        {
-          num: 5,
-          data:{
-            mon:"two",
-            tue:"two",
-            wed:"two",
-            thu:"three",
-            fri:"three",
-            sat:"three",
-            sun:"two",
-          }
-        },
-        {
-          num: 6,
-          data:{
-            mon:"one",
-            tue:"two",
-            wed:"two",
-            thu:"four",
-            fri:"one",
-            sat:"four",
-            sun:"two",
-          }
-        },
-        {
-          num: 7,
-          data:{
-            mon:"one",
-            tue:"one",
-            wed:"one",
-            thu:"four",
-            fri:"one",
-            sat:"one",
-            sun:"one",
-          }
-        },
-        {
-          num: 8,
-          data:{
-            mon:"one",
-            tue:"one",
-            wed:"one",
-            thu:"four",
-            fri:"one",
-            sat:"one",
-            sun:"one",
-          }
-        },
-      ]
+      goals:[],
     }
+  },
+  mounted(){
+    console.log("mounted")
+    fileRead().then((contents)=>{
+      var to_parse = contents.data;
+      var data = JSON.parse(to_parse);
+      console.log("data",data);
+      this.goals = data.goals;
+      console.log("data.goals",data.goals)
+      fileWrite(JSON.stringify(data))
+    });
   }
 }
 </script>
 
 <style lang="css" scoped>
-table{
-  margin: 20px;
-  transform: rotate(-90deg);
-}
-table tr{
-  padding: 0px;
-  margin: 0px;
-}
-table td{
-  transform: rotate(90deg);
-  height: 24px;
-  width: 24px;
-}
-div.four{
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: #19d44b;
-}
-div.three{
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: #63ff8d;
-}
-div.two{
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: #a1ffba;
-}
-div.one{
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: #e8e8e8;
+
+.home{
+  padding-top: 40px;
 }
 
 </style>

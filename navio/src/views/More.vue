@@ -1,10 +1,8 @@
 <template lang="html">
 <div class="more">
 <div class="card">
-
+Próximamente...
 </div>
-<input type="text" name="" value="" placeholder="Add the goal">
-<button type="button" name="button">Add</button>
 </div>
 </template>
 

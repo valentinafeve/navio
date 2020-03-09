@@ -1,0 +1,8 @@
+{
+  "appId": "navio.com",
+  "appName": "Navio",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "cordova": {}
+}

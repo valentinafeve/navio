@@ -1,23 +1,25 @@
 <template lang="html">
 <div class="goals">
-  <div class="" style="background: yellow; height: 400px;">
-    <draggable v-model="goals" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-      <transition-group type="transition" :name="'flip-list'">
-        <GoalCard v-for="goal in to_delete" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter"/>
-      </transition-group>
-    </draggable>
+
+  <!-- Delete draggable -->
+  <div class="delete_panel">
+    <div class="col-md-3">
+      <draggable element="span" v-model="goals_to_delete" v-bind="dragOptions" :move="onMove" @change="onChange">
+        <transition-group name="no" class="list-group" tag="ul">
+          <li class="list-group-item" v-for="element in goals_to_delete" :key="element.id" @change="onChange">
+            <i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @change="onChange" aria-hidden="true"></i>
+            {{element.name}}
+          </li>
+        </transition-group>
+      </draggable>
+    </div>
   </div>
-  <div
-  class="hidden_buttons"
-  @dragover.prevent
-  >
-  </div>
+  <!-- End delete draggable -->
+
+<!-- Add goal card -->
   <div class="card">
-    {{ to_delete }}
     <div v-if="inverted_goal">
-      <div class="title">
-        I promise not to...
-      </div>
+      <div class="title">I promise not to...</div>
       <div class="subcard">
         <input placeholder="smoke" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name">
       </div>
@@ -26,9 +28,7 @@
       </div>
     </div>
     <div v-else>
-      <div class="title">
-        I promise to...
-      </div>
+      <div class="title">I promise to...</div>
       <div class="subcard">
         <input placeholder="drink" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name">
       </div>
@@ -41,31 +41,32 @@
       <div class="ui toggle checkbox" draggable="true">
         <input type="checkbox" name="checkbox" v-model="inverted_goal">
         <label>
-          <div v-if="inverted_goal">
-            Bad
-          </div>
-          <div v-else>
-            Good
-          </div>
+          <div v-if="inverted_goal">Bad</div>
+          <div v-else>Good</div>
         </label>
       </div>
     </div>
     <div
-    id="hidden_buttons"
     class="button"
     >
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="add_goal" type="button" name="button"> Add</button>
     </div>
   </div>
-  <div
-  class="board"
-  >
-    <draggable v-model="goals" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-      <transition-group type="transition" :name="'flip-list'">
-        <GoalCard v-for="goal in goals" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter"/>
-      </transition-group>
-    </draggable>
+<!-- End add goal card -->
+
+<!-- Board of goals -->
+  <div class="board">
+    <div class="col-md-3">
+      <draggable class="list-group" tag="ul" v-model="goals" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
+        <transition-group type="transition" :name="'flip-list'">
+          <li class="list-group-item" v-for="goal in goals" :key="goal.id">
+            <GoalCard :id="goal.id" :name="goal.name" :counter="goal.counter"/>
+          </li>
+        </transition-group>
+      </draggable>
+    </div>
   </div>
+  <!-- End board of goals -->
 
 </div>
 </template>
@@ -91,7 +92,7 @@ export default {
       goals: [],
       to_delete: [],
       inverted_goal: false,
-
+      goals_to_delete: [],
       editable: true,
       isDragging: false,
       delayedDragging: false
@@ -105,7 +106,7 @@ export default {
         disabled: !this.editable,
         ghostClass: "ghost"
       };
-    },
+    }
   },
   created(){
     console.log("Add page created")
@@ -136,24 +137,16 @@ export default {
         });
       });
     },
-    drop(e){
-      console.log("changed")
-      const goal_id = e.dataTransfer.getData('goal_id');
-      var thisa = this;
-      this.deleteGoal(goal_id).then(()=>{
-        this.getGoals().then((goals)=>{
-          thisa.goals = goals;
-        });
-      })
-    },
     onMove({ relatedContext, draggedContext }) {
-      console.log(relatedContext)
-      console.log(draggedContext)
       const relatedElement = relatedContext.element;
       const draggedElement = draggedContext.element;
       return (
         (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
       );
+    },
+    onChange(){
+      var goal = this.goals_to_delete.pop();
+      this.deleteGoal(goal.id);
     }
   }
 }
@@ -185,16 +178,14 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
 .goals{
   padding-bottom: 80px;
 }
-
-.goals .hidden_buttons {
-  position: fixed;
-  bottom: 120px;
-  left: 47%;
-  z-index: 90;
+.goals .delete_panel{
+  z-index: 200;
+  border-radius: 30px;
+  height: 60px;
+  width: 60px;
+  background: green;
 }
-
 </style>

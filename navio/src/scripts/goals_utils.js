@@ -31,40 +31,44 @@ export const goalsUtils = {
         goals.push(goal);
         await this.updateGoals(goals);
       },
-      addValue(goal_id, goal_value){
-        this.getGoals().then((temp)=>{
-          var goals = temp;
-          var i = 0;
-          for(var goal of goals){
-            if( goal.id == goal_id ){
-              var today = new Date();
-              var updated = false;
-              var j = 0;
-              for ( var day of goal.days ){
-                if (day.date.day == today.day && day.date.month == today.month && day.date.full_year == today.full_year){
-                  day.value = goal_value;
-                  goals[i].days[j].value=goal_value;
-                  updated = true;
-                }
-                j+=1;
+      async addValue(goal_id, goal_value){
+        var goals = await this.getGoals();
+        for(var goal of goals){
+          if( goal.id == goal_id ){
+            var today = new Date();
+            var updated = false;
+            var j = 0;
+            for ( var day of goal.days ){
+              if (day.date.day == today.day && day.date.month == today.month && day.date.full_year == today.full_year){
+                day.value = goal_value;
+                goal.days[j].value=goal_value;
+                updated = true;
               }
-              if (!updated){
-                goal.days = [];
-                goal.days.push({
-                  date: today,
-                  value: goal_value,
-                })
-              }
+              j+=1;
             }
-            i+=1;
+            if (!updated){
+              goal.days = [];
+              goal.days.push({
+                date: today,
+                value: goal_value,
+              })
+            }
           }
-          this.updateGoals(goals)
-        });
-
+        }
+        await this.updateGoals(goals)
 
       },
-      deleteGoal(id){
-        console.log(id)
+      async deleteGoal(id){
+        var goals = await this.getGoals();
+        var i = 0;
+        for(var goal of goals){
+          if(goal.id == id){
+            break;
+          }
+          i++;
+        }
+        goals.splice(i);
+        await this.updateGoals(goals)
       },
     }
 }

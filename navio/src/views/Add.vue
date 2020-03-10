@@ -5,7 +5,9 @@
   @dragover.prevent
   @drop.prevent="drop"
   >
-  <button type="button" name="button">Borrar</button>
+  <button type="button" name="button">
+    <img src="/icons/bin.svg" alt="" style="height: 42px;">
+  </button>
   </div>
   <div class="card">
     <div v-if="inverted_goal">
@@ -108,11 +110,14 @@ export default {
         });
       });
     },
-    drop: e =>{
+    drop(e){
       const goal_id = e.dataTransfer.getData('goal_id');
-      const goal = document.getElementById(goal_id);
-      console.log(goal)
-      console.log(goal_id)
+      var thisa = this;
+      this.deleteGoal(goal_id).then(()=>{
+        this.getGoals().then((goals)=>{
+          thisa.goals = goals;
+        });
+      })
     }
   }
 }
@@ -151,10 +156,9 @@ export default {
 
 .goals .hidden_buttons {
   position: fixed;
-  bottom: 90px;
+  bottom: 120px;
   left: 47%;
   z-index: 90;
-  background: green;
 }
 
 </style>

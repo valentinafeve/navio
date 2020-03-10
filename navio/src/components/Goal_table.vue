@@ -16,22 +16,11 @@
 </template>
 
 <script>
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import Day from '../components/Goal_day.vue'
-
-const { Filesystem } = Plugins;
-
-async function fileRead() {
-  let contents = await Filesystem.readFile({
-    path: 'data.json',
-    directory: FilesystemDirectory.Data,
-    encoding: FilesystemEncoding.UTF8
-  });
-  return contents;
-}
+import { goalsUtils } from "@/scripts/goals_utils";
 
 export default {
-  props: ['name', 'counter', 'isInverted'],
+  props: ['id', 'name', 'counter', 'isInverted'],
   data(){
     return {
       maximum: 0,
@@ -39,24 +28,26 @@ export default {
       ]
     }
   },
+  mixins: [
+    goalsUtils
+  ],
   components:{
     Day
   },
   mounted(){
-    fileRead().then((contents)=>{
-      var to_parse = contents.data;
-      var data = JSON.parse(to_parse);
-      for (var goal of data.goals){
-        if (this.name == goal.goal.name){
-          this.days = goal.goal.days;
-          for(var day of goal.goal.days){
-            if (day.value > this.maximum){
-              this.maximum = day.value;
+    var thisa = this;
+    this.getGoals().then((goals)=>{
+      for (var goal of goals){
+        if (thisa.name == goal.name){
+          thisa.days = goal.days;
+          for(var day of goal.days){
+            if (day.value > thisa.maximum){
+              thisa.maximum = day.value;
             }
           }
         }
       }
-    });
+    })
   },
 }
 </script>

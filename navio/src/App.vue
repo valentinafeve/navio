@@ -53,7 +53,7 @@ export default {
         console.log("File doesn't exist.")
         Filesystem.writeFile({
           path: 'data.json',
-          data: '{"goals":[]}',
+          data: '[]',
           directory: FilesystemDirectory.Data,
           encoding: FilesystemEncoding.UTF8
         })
@@ -74,19 +74,19 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 80px;
+  margin-top: 0px;
   position: relative;
 }
 #header{
-  position: fixed;
+  margin-top: 0px;
+  padding-top: 20px;
   top: 0;
   background: rgb(0,102,189);
   color: white;
-  background: #efefef;
+  background: #fbfbfb;
   height: 80px;
   width: 100%;
   vertical-align: middle;
-  padding-top: 25px;
   font-size: 26px;
   z-index: 10;
 }
@@ -96,7 +96,8 @@ export default {
 .tabs{
   display: block;
   width: 100%;
-  background: #efefef;
+  height: 80px;
+  background: #fbfbfb;
   bottom: 0;
   position: fixed;
 }

@@ -1,5 +1,12 @@
 <template lang="html">
-<div class="add">
+<div class="goals">
+  <div
+  class="hidden_buttons"
+  @dragover.prevent
+  @drop.prevent="drop"
+  >
+  <button type="button" name="button">Borrar</button>
+  </div>
   <div class="card">
     <div v-if="inverted_goal">
       <div class="title">
@@ -37,48 +44,32 @@
         </label>
       </div>
     </div>
-    <div class="button">
+    <div
+    id="hidden_buttons"
+    class="button"
+    >
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="add_goal" type="button" name="button"> Add</button>
     </div>
   </div>
-  <div class="goals">
-    <GoalCard v-for="goal in goals" :key="goal.goal.name" :name="goal.goal.name" :counter="goal.goal.counter"/>
+  <div
+  class="board"
+  >
+    <GoalCard v-for="goal in goals" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter"/>
   </div>
 </div>
 </template>
 
 <script>
-import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import GoalCard from '../components/Goal_card.vue'
-
-const { Filesystem } = Plugins;
-
-async function fileWrite(text) {
-  try {
-    await Filesystem.writeFile({
-      path: 'data.json',
-      data: text,
-      directory: FilesystemDirectory.Data,
-      encoding: FilesystemEncoding.UTF8
-    })
-  } catch(e) {
-    console.error('Unable to write file', e);
-  }
-}
-
-async function fileRead() {
-  let contents = await Filesystem.readFile({
-    path: 'data.json',
-    directory: FilesystemDirectory.Data,
-    encoding: FilesystemEncoding.UTF8
-  });
-  return contents;
-}
+import { goalsUtils } from "@/scripts/goals_utils";
 
 export default {
   components:{
     GoalCard,
   },
+  mixins: [
+    goalsUtils
+  ],
   data(){
     return {
       goal_name:"",
@@ -92,11 +83,9 @@ export default {
     console.log("Add page created")
   },
   mounted(){
-    console.log("Add page mounted")
-    fileRead().then((contents)=>{
-      var to_parse = contents.data;
-      var data = JSON.parse(to_parse);
-      this.goals = data.goals;
+    var thisa = this;
+    this.getGoals().then((goals)=>{
+      thisa.goals = goals;
     });
   },
   methods:{
@@ -104,6 +93,7 @@ export default {
 
       var date = new Date();
       var goal = {
+        id: this.generateId(),
         name: this.goal_name,
         created : date.getDate(),
         counter: this.goal_counter,
@@ -111,17 +101,18 @@ export default {
         days:[
         ],
       }
-
-      fileRead().then((contents)=>{
-        // Add the goal to this list
-        this.goals.push({goal});
-        var to_parse = contents.data;
-        var data = JSON.parse(to_parse);
-        // Insert the goal in the persistent list
-        data.goals.push({goal});
-        // Update persistent list
-        fileWrite(JSON.stringify(data))
+      var thisa = this;
+      this.addGoal(goal).then(()=>{
+        this.getGoals().then((goals)=>{
+          thisa.goals = goals;
+        });
       });
+    },
+    drop: e =>{
+      const goal_id = e.dataTransfer.getData('goal_id');
+      const goal = document.getElementById(goal_id);
+      console.log(goal)
+      console.log(goal_id)
     }
   }
 }
@@ -132,30 +123,38 @@ export default {
   display: inline-block;
   margin: 0 auto;
 }
-.add .card{
+.goals .card{
   padding-top: 40px;
   padding-bottom: 20px;
   background: #f7f7ff;
 }
-.add .subcard{
+.goals .subcard{
   padding-top: 5px;
   padding-bottom: 5px;
 }
-.add .card .title{
+.goals .card .title{
   font-size: 24px;
   margin-top: 20px;
   margin-bottom: 5px;
 }
-.add button{
+.goals button{
   margin-top: 20px;
 }
-.add .inverted_sel{
+.goals .inverted_sel{
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.add{
+.goals{
   padding-bottom: 80px;
+}
+
+.goals .hidden_buttons {
+  position: fixed;
+  bottom: 90px;
+  left: 47%;
+  z-index: 90;
+  background: green;
 }
 
 </style>

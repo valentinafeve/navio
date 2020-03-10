@@ -6,8 +6,6 @@
      class="max-w-sm rounded overflow-hidden shadow-lg w-full card"
      value="volvo"
      draggable="true"
-     @dragstart="dragStart"
-     @dragover.stop
      >
        <div class="title">
          Hoy many {{ counter }} did I {{ name }} today?

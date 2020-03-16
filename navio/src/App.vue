@@ -9,10 +9,10 @@
         <div class="button_tab" @click="go_to('more')">
           <img src="/icons/info.svg" alt="" style="height:40px;">
         </div>
-        <div class="button_tab" @click="go_to('/')">
+        <div class="button_tab" @click="go_to('home')">
           <img src="/icons/home.svg" alt="" style="height:40px;">
         </div>
-        <div class="button_tab" @click="go_to('add')">
+        <div class="button_tab" @click="go_to('goals')">
           <img src="/icons/clock.svg" alt="" style="height:40px;">
         </div>
       </div>
@@ -75,6 +75,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+  padding: 0px;
+
   position: relative;
 }
 #header{

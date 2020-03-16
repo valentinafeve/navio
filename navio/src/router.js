@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from './views/Home'
-import Add from './views/Add'
+import Goals from './views/Goals'
 import More from './views/More'
 
 Vue.use(VueRouter)
@@ -18,9 +18,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/add',
-    name: 'add',
-    component: Add
+    path: '/goals',
+    name: 'goals',
+    component: Goals
   },
 ]
 

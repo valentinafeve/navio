@@ -2,16 +2,21 @@
 <div class="goals">
 
   <!-- Delete draggable -->
-  <div class="delete_panel">
-    <div class="col-md-3">
-      <draggable element="span" v-model="goals_to_delete" v-bind="dragOptions" :move="onMove" @change="onChange">
-        <transition-group name="no" class="list-group" tag="ul">
-          <li class="list-group-item" v-for="element in goals_to_delete" :key="element.id" @change="onChange">
-            <i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @change="onChange" aria-hidden="true"></i>
-            {{element.name}}
-          </li>
-        </transition-group>
-      </draggable>
+  <div class="delete_panel" @change="onChange">
+    <div class="relative">
+      {{ isDragging }}
+      <div class="visible">
+        <img src="icons/bin.svg" alt="" style="height:32px">
+      </div>
+      <div class="nonvisible">
+        <draggable ghost-class="ghost" element="span" v-model="goals_to_delete" v-bind="dragOptions" :move="onMove" @drop="onDrop" @start="isDragging=true" @end="isDragging=false">
+          <GoalCard v-for="goal in goals_to_delete" :key="goal.id">
+            {{ goal.name }}
+          </GoalCard>
+        </draggable>
+        <div class="col-md-3">
+        </div>
+      </div>
     </div>
   </div>
   <!-- End delete draggable -->
@@ -57,12 +62,8 @@
 <!-- Board of goals -->
   <div class="board">
     <div class="col-md-3">
-      <draggable class="list-group" tag="ul" v-model="goals" v-bind="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false">
-        <transition-group type="transition" :name="'flip-list'">
-          <li class="list-group-item" v-for="goal in goals" :key="goal.id">
-            <GoalCard :id="goal.id" :name="goal.name" :counter="goal.counter"/>
-          </li>
-        </transition-group>
+      <draggable tag="div" v-model="goals" v-bind="dragOptions">
+        <GoalCard v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter"/>
       </draggable>
     </div>
   </div>
@@ -95,7 +96,7 @@ export default {
       goals_to_delete: [],
       editable: true,
       isDragging: false,
-      delayedDragging: false
+      delayedDragging: false,
     }
   },
   computed:{
@@ -104,7 +105,7 @@ export default {
         animation: 0,
         group: "description",
         disabled: !this.editable,
-        ghostClass: "ghost"
+        ghostClass: "ghostu"
       };
     }
   },
@@ -119,7 +120,6 @@ export default {
   },
   methods:{
     add_goal(){
-
       var date = new Date();
       var goal = {
         id: this.generateId(),
@@ -138,15 +138,23 @@ export default {
       });
     },
     onMove({ relatedContext, draggedContext }) {
+      console.log("Moving")
       const relatedElement = relatedContext.element;
       const draggedElement = draggedContext.element;
-      return (
-        (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      );
+      console.log(relatedElement);
+      console.log(draggedElement);
+      // return (
+      //   (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+      // );
     },
     onChange(){
+      console.log("change")
       var goal = this.goals_to_delete.pop();
       this.deleteGoal(goal.id);
+    },
+    onDrop(){
+      console.log("drop")
+      console.log("re")
     }
   }
 }
@@ -155,9 +163,13 @@ export default {
 <style lang="css" scoped>
 .goals{
   display: inline-block;
-  margin: 0 auto;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  position: relative;
 }
 .goals .card{
+  width: 100%;
   padding-top: 40px;
   padding-bottom: 20px;
   background: #f7f7ff;
@@ -186,6 +198,49 @@ export default {
   border-radius: 30px;
   height: 60px;
   width: 60px;
+  background: #eb4343;
+  position: fixed;
+  bottom: 85px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.goals .delete_panel .relative{
+  position: relative;
+  height: 60px;
+  width: 60px;
+}
+.goals .delete_panel .visible{
+  position: absolute;
+  height: 60px;
+  width: 60px;
+}
+.goals .delete_panel .nonnvisible{
+  position: absolute;
+  top: 0;
+  height: 60px;
+  width: 60px;
+  background: yellow;
+
+}
+.goals .delete_panel img{
+  margin: 0 auto;
+  vertical-align: middle;
+}
+
+.goals .delete_panel:hover{
   background: green;
+}
+.goals .delete_panel:focus{
+  background: blue;
+}
+.goals .delete_panel:target{
+  background: yellow;
+}
+
+.ghost {
+  /* display: none; */
+  background: red;
 }
 </style>

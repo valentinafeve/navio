@@ -1,5 +1,8 @@
 <template lang="html">
 <div class="home">
+  <div v-if="no_goals" class="message">
+    Go to <a href="#/goals">goals</a> to create your first goal.
+  </div>
   <GoalTable v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
   </GoalTable>
 </div>
@@ -21,6 +24,11 @@ export default {
       goals:[],
     }
   },
+  computed:{
+    no_goals(){
+      return (this.goals.length < 1)
+    }
+  },
   created(){
     console.log("Home created.")
   },
@@ -38,6 +46,16 @@ export default {
 .home{
   padding-top: 40px;
   padding-bottom: 80px;
+}
+
+.home .message{
+  padding-top: 40px;
+  padding-bottom: 80px;
+  color: #232323;
+  background-color: #efefef;
+  border-radius: 15px;
+  width: 95%;
+  margin: 0 auto;
 }
 
 </style>

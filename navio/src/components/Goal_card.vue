@@ -10,19 +10,16 @@
          Hoy many {{ counter }} did I {{ name }} today?
        </div>
        <div class="">
-         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="number" min="0" v-model="goal_data" @click="onClick" @keypress="isNumber($event)" maxlength="6">
+         <input class="blue" id="inline-full-name" type="text" min="0" v-model="goal_data" @click="onClick" @input="validateValueGoalInput()" maxlength="6">
        </div>
        <div class="">
-         <button @click="add_data_to_goal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" name="button"> Add data</button>
+         <button @click="add_data_to_goal" class="button" :disabled="disableSubmit" type="button" :class="{disabled: disableSubmit}" name="button"> Add data</button>
        </div>
      </div>
      <div class="option_buttons" :class="{visible: buttons_visible}">
-      <div class="button delete_button" @click="button_delete_onClick">
+      <div class="delete_button" @click="button_delete_onClick">
         <img src="icons/bin.svg" alt="" style="height:30px;">
       </div>
-      <!-- <div class="button delete_button" @click="button_delete_onClick">
-        <img src="icons/bin.svg" alt="" style="height:30px;">
-      </div> -->
      </div>
   </div>
 </template>
@@ -37,9 +34,12 @@ export default {
   ],
   data(){
     return {
+      key_pressed: '',
       goal_data: "",
+      lastValid: '',
       buttons_visible: false,
       isDeleted: false,
+      disableSubmit: true,
     }
   },
   methods:{
@@ -48,16 +48,24 @@ export default {
       var goal_data = this.goal_data;
       this.goal_data = '';
       this.addValue(this.id, goal_data);
+      this.disableSubmit = true;
+      this.lastValid = '';
     },
-    isNumber(evt){
-       evt = (evt) ? evt : window.event;
-       var charCode = (evt.which) ? evt.which : evt.keyCode;
-       if ((charCode > 31 && (charCode < 48 || charCode > 57)) || this.goal_data.length > 8) {
-         evt.preventDefault();
-       }
-       else{
-         return true;
-       }
+    validateValueGoalInput(){
+      const reg = /^([0-9]{1,10})$/
+      if (reg.test( this.goal_data) && !this.goal_data.endsWith('.')){
+        this.disableSubmit = false;
+        this.lastValid = this.goal_data;
+      }
+      else{
+        console.log(this.goal_data.length)
+        if (this.goal_data.length > 0 ){
+          this.goal_data = this.lastValid;
+        }
+        else{
+          this.disableSubmit = true;
+        }
+      }
      },
     dragStart(e) {
       const target = e.target;
@@ -81,14 +89,16 @@ export default {
 }
 .goal_card .card{
   padding: 20px;
-  width: 80%;
   margin: 0 auto;
   border-radius: 10px;
-  margin-top: 5px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 10px;
+  background: #f3f3fa;
 }
 .goal_card .card input{
-  width: 95%;
+  width: 80px;
 }
 .goal_card .card button{
   margin-top: 20px;
@@ -103,20 +113,19 @@ export default {
 .goal_card .option_buttons{
   display: none;
 }
-.goal_card .button.delete_button{
+.goal_card .delete_button{
   margin: 0 auto;
-  margin-top: 5px;
-  margin-left: 10px;
-  background: #cd2323;
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  padding-top: 13px;
   display: inline-block;
+  background: #cd2323;
+  position: relative;
 }
-.goal_card .button.delete_button img{
-  margin: 0 auto;
-  height: 100%;
+.goal_card .delete_button img{
+  position: absolute;
+  top: 13px;
+  left: 15px;
 }
 .goal_card .visible{
   display: block;

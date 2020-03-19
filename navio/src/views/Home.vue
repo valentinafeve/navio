@@ -1,9 +1,9 @@
 <template lang="html">
 <div class="home">
   <div v-if="no_goals" class="message">
-    You still don't have any goals.
+    You'll see your goals here.
   </div>
-  <GoalTable v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
+  <GoalTable v-for="goal in goals" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
   </GoalTable>
 </div>
 </template>
@@ -44,7 +44,6 @@ export default {
 <style lang="css" scoped>
 
 .home{
-  width: 100%;
   padding: 20px;
   padding-top: 40px;
   padding-bottom: 80px;

@@ -8,9 +8,29 @@
         History of {{ counter }} I've promised to {{ name }}
       </span>
   </div>
-  <div class="table" >
-    <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value" :isInverted="isInverted">
-    </Day>
+  <div class="table_panel">
+    <div class="table" >
+      <div v-for="day in days" :key="day.date" class="day_square" @click="show_info(day)">
+        <Day class="" :max="maximum" :value="day.value" :date="day.date" :isInverted="isInverted">
+        </Day>
+      </div>
+    </div>
+  </div>
+  <div class="info_panel" :class="{visible: infoVisible}">
+    <div class="">
+      On
+      <b>
+        {{date}}
+      </b>
+      at
+      {{ time }}
+      I did
+      {{ name }}
+      <b>
+      {{ value }}
+      </b>
+      {{ counter}}
+    </div>
   </div>
 </div>
 </template>
@@ -24,6 +44,10 @@ export default {
   data(){
     return {
       maximum: 0,
+      date: '',
+      time: '',
+      value: 0,
+      infoVisible: false,
       days:[
       ]
     }
@@ -34,14 +58,24 @@ export default {
   components:{
     Day
   },
+  methods:{
+    show_info(info){
+      var date = new Date(info.date);
+      this.date = date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+      this.time = date.getHours()+':'+date.getMinutes();
+      this.value = info.value;
+      this.infoVisible = !this.infoVisible;
+      console.log(info)
+    }
+  },
   mounted(){
     var thisa = this;
     this.getGoals().then((goals)=>{
       for (var goal of goals){
-        if (thisa.name == goal.name){
+        if (thisa.id == goal.id){
           thisa.days = goal.days;
           for(var day of goal.days){
-            if (day.value > thisa.maximum){
+            if (parseFloat(day.value) > parseFloat(thisa.maximum)){
               thisa.maximum = day.value;
             }
           }
@@ -53,19 +87,36 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.goal_table{
+  padding: 0px;
+}
 .goal_table .title{
   font-size: 1.2em;
-  margin: 20px;
+  margin: 10px;
+  margin-top: 20px;
 }
 .table{
   display: block;
   width: 168px;
-  margin: 0px;
-  margin-top: 120px;
-  margin-bottom: 120px;
+  margin-top: 110px;
+  margin-bottom: 130px;
+  margin-left: -60px;
   border-top: 1px solid #efefef;
   border-left: 1px solid #efefef;
   border-right: 1px solid #efefef;
   transform: scale(1, -1) rotate(-90deg);
+}
+.info_panel{
+  background: #bedeff;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 60px;
+  display: none;
+}
+.info_panel.visible{
+  display: block;
 }
 </style>

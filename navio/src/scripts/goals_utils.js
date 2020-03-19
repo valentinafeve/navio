@@ -37,24 +37,22 @@ export const goalsUtils = {
           if( goal.id == goal_id ){
             var today = new Date();
             var updated = false;
-            var j = 0;
-            for ( var day of goal.days ){
-              if (day.date.day == today.day && day.date.month == today.month && day.date.full_year == today.full_year){
-                day.value = goal_value;
-                goal.days[j].value=goal_value;
+            for ( var day_ of goal.days ){
+              var day =  new Date(day_.date)
+              if (day.getDate() == today.getDate() && day.getMonth() == today.getMonth() && day.getFullYear == today.getFullYear){
+                day_.value = goal_value;
                 updated = true;
               }
-              j+=1;
             }
             if (!updated){
-              goal.days = [];
               goal.days.push({
-                date: today,
+                date: today.toString(),
                 value: goal_value,
               })
             }
           }
         }
+        console.log(goals)
         await this.updateGoals(goals)
 
       },

@@ -9,7 +9,7 @@
         <div class="button_tab" @click="go_to('more')">
           <img src="/icons/info.svg" alt="" style="height:40px;">
         </div>
-        <div class="button_tab" @click="go_to('home')">
+        <div class="button_tab" @click="go_to('/')">
           <img src="/icons/home.svg" alt="" style="height:40px;">
         </div>
         <div class="button_tab" @click="go_to('goals')">
@@ -23,15 +23,8 @@
 <script>
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import router from './router'
-
-const { StatusBar } = Plugins;
 const { Filesystem } = Plugins;
-
-StatusBar.setBackgroundColor({options:
-{  StatusBarBackgroundColorOptions : {
-  color : "#efefef",
-  }}
-});
+const { StatusBar } = Plugins;
 
 export default {
   name: 'App',
@@ -44,6 +37,7 @@ export default {
   },
   created(){
     try {
+      StatusBar.setBackgroundColor({color: '#176be8'});
 
       Filesystem.readFile({
         path: 'data.json',
@@ -76,8 +70,8 @@ export default {
   color: #2c3e50;
   margin-top: 0px;
   padding: 0px;
-
-  position: relative;
+  margin: 0px;
+  width: 100%;
 }
 #header{
   margin-top: 0px;
@@ -85,7 +79,7 @@ export default {
   top: 0;
   background: rgb(0,102,189);
   color: white;
-  background: #fbfbfb;
+  background: #176be8;
   height: 80px;
   width: 100%;
   vertical-align: middle;
@@ -93,7 +87,7 @@ export default {
   z-index: 10;
 }
 #header{
-  color: #9f9f9f;
+  color: white;
 }
 .tabs{
   display: block;

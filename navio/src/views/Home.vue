@@ -1,7 +1,7 @@
 <template lang="html">
 <div class="home">
   <div v-if="no_goals" class="message">
-    Go to <a href="#/goals">goals</a> to create your first goal.
+    You still don't have any goals.
   </div>
   <GoalTable v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
   </GoalTable>
@@ -44,18 +44,22 @@ export default {
 <style lang="css" scoped>
 
 .home{
+  width: 100%;
+  padding: 20px;
   padding-top: 40px;
   padding-bottom: 80px;
 }
 
 .home .message{
-  padding-top: 40px;
-  padding-bottom: 80px;
-  color: #232323;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #656565;
   background-color: #efefef;
   border-radius: 15px;
-  width: 95%;
+  width: auto;
   margin: 0 auto;
+  margin-right: 20px;
+  margin-left: 15px;
 }
 
 </style>

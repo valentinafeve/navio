@@ -1,26 +1,6 @@
 <template lang="html">
 <div class="goals">
 
-  <!-- Delete draggable -->
-  <div class="delete_panel" @change="onChange">
-    <div class="relative">
-      {{ isDragging }}
-      <div class="visible">
-        <img src="icons/bin.svg" alt="" style="height:32px">
-      </div>
-      <div class="nonvisible">
-        <draggable ghost-class="ghost" element="span" v-model="goals_to_delete" v-bind="dragOptions" :move="onMove" @drop="onDrop" @start="isDragging=true" @end="isDragging=false">
-          <GoalCard v-for="goal in goals_to_delete" :key="goal.id">
-            {{ goal.name }}
-          </GoalCard>
-        </draggable>
-        <div class="col-md-3">
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End delete draggable -->
-
 <!-- Add goal card -->
   <div class="card">
     <div v-if="inverted_goal">
@@ -61,11 +41,7 @@
 
 <!-- Board of goals -->
   <div class="board">
-    <div class="col-md-3">
-      <draggable tag="div" v-model="goals" v-bind="dragOptions">
-        <GoalCard v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter"/>
-      </draggable>
-    </div>
+      <GoalCard v-for="goal in goals" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter"/>
   </div>
   <!-- End board of goals -->
 
@@ -75,12 +51,10 @@
 <script>
 import GoalCard from '../components/Goal_card.vue'
 import { goalsUtils } from "@/scripts/goals_utils";
-import draggable from "vuedraggable";
 
 export default {
   components:{
     GoalCard,
-    draggable,
   },
   mixins: [
     goalsUtils
@@ -137,25 +111,6 @@ export default {
         });
       });
     },
-    onMove({ relatedContext, draggedContext }) {
-      console.log("Moving")
-      const relatedElement = relatedContext.element;
-      const draggedElement = draggedContext.element;
-      console.log(relatedElement);
-      console.log(draggedElement);
-      // return (
-      //   (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-      // );
-    },
-    onChange(){
-      console.log("change")
-      var goal = this.goals_to_delete.pop();
-      this.deleteGoal(goal.id);
-    },
-    onDrop(){
-      console.log("drop")
-      console.log("re")
-    }
   }
 }
 </script>
@@ -172,7 +127,13 @@ export default {
   width: 100%;
   padding-top: 40px;
   padding-bottom: 20px;
-  background: #f7f7ff;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: #dfe7f2;
+}
+.goals input{
+  text-transform: lowercase;
+  width: 60%;
 }
 .goals .subcard{
   padding-top: 5px;
@@ -193,54 +154,13 @@ export default {
 .goals{
   padding-bottom: 80px;
 }
-.goals .delete_panel{
-  z-index: 200;
-  border-radius: 30px;
-  height: 60px;
-  width: 60px;
-  background: #eb4343;
-  position: fixed;
-  bottom: 85px;
-  left: 0;
-  right: 0;
-  margin-left: auto;
-  margin-right: auto;
-}
-.goals .delete_panel .relative{
-  position: relative;
-  height: 60px;
-  width: 60px;
-}
-.goals .delete_panel .visible{
-  position: absolute;
-  height: 60px;
-  width: 60px;
-}
-.goals .delete_panel .nonnvisible{
+.ghost {
+  /* display: none; */
   position: absolute;
   top: 0;
   height: 60px;
   width: 60px;
-  background: yellow;
-
-}
-.goals .delete_panel img{
-  margin: 0 auto;
-  vertical-align: middle;
-}
-
-.goals .delete_panel:hover{
-  background: green;
-}
-.goals .delete_panel:focus{
-  background: blue;
-}
-.goals .delete_panel:target{
-  background: yellow;
-}
-
-.ghost {
-  /* display: none; */
-  background: red;
+  margin: 0px;
+  padding: 0px;
 }
 </style>

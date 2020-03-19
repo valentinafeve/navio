@@ -42,12 +42,12 @@ export default {
     try {
       StatusBar.setBackgroundColor({color: '#176be8'});
       Filesystem.readFile({
-        path: 'goals.json',
+        path: 'file12568126721.json',
         directory: FilesystemDirectory.Data,
         encoding: FilesystemEncoding.UTF8
       }).then().catch(()=>{
         Filesystem.writeFile({
-          path: 'goals.json',
+          path: 'file12568126721.json',
           data: '[]',
           directory: FilesystemDirectory.Data,
           encoding: FilesystemEncoding.UTF8

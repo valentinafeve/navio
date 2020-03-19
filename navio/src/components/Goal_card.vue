@@ -10,19 +10,16 @@
          Hoy many {{ counter }} did I {{ name }} today?
        </div>
        <div class="">
-         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="number" min="0" v-model="goal_data" @click="onClick" @keypress="isNumber($event)" maxlength="6">
+         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" min="0" v-model="goal_data" @click="onClick" @input="validateValueGoalInput()" maxlength="6">
        </div>
        <div class="">
-         <button @click="add_data_to_goal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button" name="button"> Add data</button>
+         <button @click="add_data_to_goal" class="button" :disabled="disableSubmit" type="button" :class="{disabled: disableSubmit}" name="button"> Add data</button>
        </div>
      </div>
      <div class="option_buttons" :class="{visible: buttons_visible}">
       <div class="delete_button" @click="button_delete_onClick">
         <img src="icons/bin.svg" alt="" style="height:30px;">
       </div>
-      <!-- <div class="button delete_button" @click="button_delete_onClick">
-        <img src="icons/bin.svg" alt="" style="height:30px;">
-      </div> -->
      </div>
   </div>
 </template>
@@ -37,9 +34,12 @@ export default {
   ],
   data(){
     return {
+      key_pressed: '',
       goal_data: "",
+      lastValid: '',
       buttons_visible: false,
       isDeleted: false,
+      disableSubmit: true,
     }
   },
   methods:{
@@ -49,15 +49,21 @@ export default {
       this.goal_data = '';
       this.addValue(this.id, goal_data);
     },
-    isNumber(evt){
-       evt = (evt) ? evt : window.event;
-       var charCode = (evt.which) ? evt.which : evt.keyCode;
-       if ((charCode > 31 && (charCode < 48 || charCode > 57)) || this.goal_data.length > 8) {
-         evt.preventDefault();
-       }
-       else{
-         return true;
-       }
+    validateValueGoalInput(){
+      const reg = /^([0-9]{1,10})$/
+      if (reg.test( this.goal_data) && !this.goal_data.endsWith('.')){
+        this.disableSubmit = false;
+        this.lastValid = this.goal_data;
+      }
+      else{
+        console.log(this.goal_data.length)
+        if (this.goal_data.length > 0 ){
+          this.goal_data = this.lastValid;
+        }
+        else{
+          this.disableSubmit = true;
+        }
+      }
      },
     dragStart(e) {
       const target = e.target;

@@ -32,23 +32,20 @@ export const goalsUtils = {
         await this.updateGoals(goals);
       },
       async addValue(goal_id, goal_value){
+        console.log("Ading..."+goal_value+' to '+goal_id)
         var goals = await this.getGoals();
         for(var goal of goals){
           if( goal.id == goal_id ){
             var today = new Date();
-            today.setDate(16);
             var updated = false;
-            var j = 0;
-            for ( var day of goal.days ){
-              if (day.date.day == today.day && day.date.month == today.month && day.date.full_year == today.full_year){
-                day.value = goal_value;
-                goal.days[j].value=goal_value;
+            for ( var day_ of goal.days ){
+              var day =  new Date(day_.date)
+              if (day.getDate() == today.getDate() && day.getMonth() == today.getMonth() && day.getFullYear == today.getFullYear){
+                day_.value = goal_value;
                 updated = true;
               }
-              j+=1;
             }
             if (!updated){
-              goal.days = [];
               goal.days.push({
                 date: today,
                 value: goal_value,

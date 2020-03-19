@@ -10,8 +10,26 @@
   </div>
   <div class="table_panel">
     <div class="table" >
-      <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value" :isInverted="isInverted">
-      </Day>
+      <div v-for="day in days" :key="day.date" class="day_square" @click="show_info(day)">
+        <Day class="" :max="maximum" :value="day.value" :date="day.date" :isInverted="isInverted">
+        </Day>
+      </div>
+    </div>
+  </div>
+  <div class="info_panel" :class="{visible: infoVisible}">
+    <div class="">
+      On
+      <b>
+        {{date}}
+      </b>
+      at
+      {{ time }}
+      I did 
+      {{ name }}
+      <b>
+      {{ value }}
+      </b>
+      {{ counter}}
     </div>
   </div>
 </div>
@@ -26,6 +44,10 @@ export default {
   data(){
     return {
       maximum: 0,
+      date: '',
+      time: '',
+      value: 0,
+      infoVisible: false,
       days:[
       ]
     }
@@ -35,6 +57,16 @@ export default {
   ],
   components:{
     Day
+  },
+  methods:{
+    show_info(info){
+      var date = new Date(info.date);
+      this.date = date.getDate()+'/'+date.getMonth()+'/'+date.getFullYear();
+      this.time = date.getHours()+':'+date.getMinutes();
+      this.value = info.value;
+      this.infoVisible = !this.infoVisible;
+      console.log(info)
+    }
   },
   mounted(){
     var thisa = this;
@@ -61,20 +93,30 @@ export default {
 .goal_table .title{
   font-size: 1.2em;
   margin: 10px;
-}
-.table_panel{
-  position: relative;
+  margin-top: 20px;
 }
 .table{
-  /* position: absolute; */
   display: block;
   width: 168px;
   margin-top: 100px;
-  margin-bottom: 120px;
+  margin-bottom: 100px;
   margin-left: -40px;
   border-top: 1px solid #efefef;
   border-left: 1px solid #efefef;
   border-right: 1px solid #efefef;
   transform: scale(1, -1) rotate(-90deg);
+}
+.info_panel{
+  background: #dedeff;
+  border-radius: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 60px;
+  display: none;
+}
+.info_panel.visible{
+  display: block;
 }
 </style>

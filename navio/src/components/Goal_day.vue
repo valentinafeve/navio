@@ -1,11 +1,13 @@
 <template lang="html">
-<div class="day" :class="class_color">
-</div>
+  <div class="goal_day">
+    <div class="day" :class="class_color">
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  props:['value', 'max', 'isInverted'],
+  props:['value', 'date', 'max', 'isInverted'],
   computed:{
     class_color(){
       if (this.max == 0) {
@@ -42,6 +44,8 @@ export default {
         return "one"
       }
     }
+  },
+  methods: {
   }
 }
 </script>

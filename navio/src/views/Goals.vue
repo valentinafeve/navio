@@ -6,19 +6,19 @@
     <div v-if="inverted_goal">
       <div class="title">I promise not to...</div>
       <div class="subcard">
-        <input placeholder="smoke" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name" maxlength="30">
+        <input placeholder="smoke" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name" @input="validateGoalNameInput" maxlength="30">
       </div>
       <div class="subcard">
-        any <input placeholder="cigarettes" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter" maxlength="30">
+        any <input placeholder="cigarettes" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter" @input="validateGoalCounterInput" maxlength="30">
       </div>
     </div>
     <div v-else>
       <div class="title">I promise to...</div>
       <div class="subcard">
-        <input placeholder="drink" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name">
+        <input placeholder="drink" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name" @input="validateGoalNameInput">
       </div>
       <div class="subcard">
-        many <input placeholder="glasses of water" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter">
+        many <input placeholder="glasses of water" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter" @input="validateGoalCounterInput">
       </div>
     </div>
 
@@ -34,7 +34,7 @@
     <div
     class="button"
     >
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="add_goal" type="button" name="button"> Add</button>
+      <button class="button" :class="{disabled: disableSubmit}" :disabled="disableSubmit" @click="add_goal" type="button" name="button"> Add</button>
     </div>
   </div>
 <!-- End add goal card -->
@@ -68,9 +68,8 @@ export default {
       to_delete: [],
       inverted_goal: false,
       goals_to_delete: [],
-      editable: true,
-      isDragging: false,
-      delayedDragging: false,
+      disableSubmit: true,
+      lastValid: '',
     }
   },
   computed:{
@@ -111,6 +110,39 @@ export default {
         });
       });
     },
+    validateGoalNameInput(){
+      const reg = /^([a-zA-Z\s]){1,30}$/
+      if (reg.test( this.goal_name)){
+        console.log("Matches")
+        this.disableSubmit = false;
+        this.lastValid = this.goal_name;
+      }
+      else{
+        console.log(this.goal_name.length)
+        if (this.goal_name.length > 0 ){
+          this.goal_name = this.lastValid;
+        }
+        else{
+          this.disableSubmit = true;
+        }
+      }
+     },
+    validateGoalCounterInput(){
+      const reg = /^([a-zA-Z\s]){1,30}$/
+      if (reg.test( this.goal_counter) && !this.goal_counter.endsWith('.')){
+        this.disableSubmit = false;
+        this.lastValid = this.goal_counter;
+      }
+      else{
+        console.log(this.goal_counter.length)
+        if (this.goal_counter.length > 0 ){
+          this.goal_counter = this.lastValid;
+        }
+        else{
+          this.disableSubmit = true;
+        }
+      }
+     },
   }
 }
 </script>

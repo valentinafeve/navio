@@ -3,17 +3,19 @@
     <div id="header">
       Navio
     </div>
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
     <div class="tabs">
       <div class="buttons">
         <div class="button_tab" @click="go_to('more')">
-          <img src="/icons/info.svg" alt="" style="height:40px;">
+          <img src="/icons/info.svg" alt="" style="height:25px;">
         </div>
         <div class="button_tab" @click="go_to('/')">
-          <img src="/icons/home.svg" alt="" style="height:40px;">
+          <img src="/icons/home.svg" alt="" style="height:25px;">
         </div>
         <div class="button_tab" @click="go_to('goals')">
-          <img src="/icons/clock.svg" alt="" style="height:40px;">
+          <img src="/icons/clock.svg" alt="" style="height:25px;">
         </div>
       </div>
     </div>
@@ -23,6 +25,7 @@
 <script>
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 import router from './router'
+
 const { Filesystem } = Plugins;
 const { StatusBar } = Plugins;
 
@@ -38,30 +41,31 @@ export default {
   created(){
     try {
       StatusBar.setBackgroundColor({color: '#176be8'});
-
       Filesystem.readFile({
-        path: 'data.json',
+        path: 'goals.json',
         directory: FilesystemDirectory.Data,
         encoding: FilesystemEncoding.UTF8
       }).then().catch(()=>{
-        console.log("File doesn't exist.")
         Filesystem.writeFile({
-          path: 'data.json',
+          path: 'goals.json',
           data: '[]',
           directory: FilesystemDirectory.Data,
           encoding: FilesystemEncoding.UTF8
         })
-        console.log("Created.")
       });
 
     } catch(e) {
-      console.error('Unable to write file', e);
+      console.error(e);
     }
   },
 }
 </script>
 
 <style>
+body{
+  padding: 0px;
+  margin: 0px;
+}
 #app {
   font-family: Inter;
   -webkit-font-smoothing: antialiased;
@@ -72,6 +76,7 @@ export default {
   padding: 0px;
   margin: 0px;
   width: 100%;
+  position: relative;
 }
 #header{
   margin-top: 0px;
@@ -80,33 +85,37 @@ export default {
   background: rgb(0,102,189);
   color: white;
   background: #176be8;
-  height: 80px;
   width: 100%;
   vertical-align: middle;
   font-size: 26px;
   z-index: 10;
+  height: 60px;
 }
 #header{
   color: white;
 }
+.container{
+  width: 100%;
+}
 .tabs{
   display: block;
-  width: 100%;
-  height: 80px;
+  height: 60px;
   background: #fbfbfb;
   bottom: 0;
+  width: inherit;
   position: fixed;
+  padding: 0px;
 }
 .tabs .buttons{
-  display: inline-block;
   margin: 0 auto;
+  padding: 0px;
 }
 .tabs .button_tab{
   display: inline-block;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  width: 30%;
+  width: 10%;
 }
 </style>

@@ -124,12 +124,11 @@ export default {
   position: relative;
 }
 .goals .card{
-  width: 100%;
   padding-top: 40px;
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
-  background: #dfe7f2;
+  background: #f0f5fc;
 }
 .goals input{
   text-transform: lowercase;

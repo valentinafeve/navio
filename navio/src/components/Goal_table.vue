@@ -8,9 +8,11 @@
         History of {{ counter }} I've promised to {{ name }}
       </span>
   </div>
-  <div class="table" >
-    <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value" :isInverted="isInverted">
-    </Day>
+  <div class="table_panel">
+    <div class="table" >
+      <Day class="" v-for="day in days" :key="day.date" :max="maximum" :value="day.value" :isInverted="isInverted">
+      </Day>
+    </div>
   </div>
 </div>
 </template>
@@ -53,16 +55,23 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.goal_table{
+  padding: 0px;
+}
 .goal_table .title{
   font-size: 1.2em;
-  margin: 20px;
+  margin: 10px;
+}
+.table_panel{
+  position: relative;
 }
 .table{
+  /* position: absolute; */
   display: block;
   width: 168px;
-  margin: 0px;
-  margin-top: 120px;
+  margin-top: 100px;
   margin-bottom: 120px;
+  margin-left: -40px;
   border-top: 1px solid #efefef;
   border-left: 1px solid #efefef;
   border-right: 1px solid #efefef;

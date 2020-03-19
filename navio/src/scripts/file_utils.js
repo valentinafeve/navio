@@ -5,7 +5,7 @@ export const fileUtils = {
     methods: {
         fileWrite(text){
           return Filesystem.writeFile({
-            path: 'data.json',
+            path: 'goals.json',
             data: text,
             directory: FilesystemDirectory.Data,
             encoding: FilesystemEncoding.UTF8
@@ -13,7 +13,7 @@ export const fileUtils = {
         },
         fileRead() {
           return Filesystem.readFile({
-            path: 'data.json',
+            path: 'goals.json',
             directory: FilesystemDirectory.Data,
             encoding: FilesystemEncoding.UTF8
           })

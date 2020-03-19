@@ -32,7 +32,6 @@ export const goalsUtils = {
         await this.updateGoals(goals);
       },
       async addValue(goal_id, goal_value){
-        console.log("Ading..."+goal_value+' to '+goal_id)
         var goals = await this.getGoals();
         for(var goal of goals){
           if( goal.id == goal_id ){
@@ -47,12 +46,13 @@ export const goalsUtils = {
             }
             if (!updated){
               goal.days.push({
-                date: today,
+                date: today.toString(),
                 value: goal_value,
               })
             }
           }
         }
+        console.log(goals)
         await this.updateGoals(goals)
 
       },

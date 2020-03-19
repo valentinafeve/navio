@@ -58,6 +58,7 @@ export default {
   width: 24px;
   border: 1px solid #efefef;
   background-color: #19d44b;
+  float: left;
 }
 .day.four{
   background-color: #00BF5F;

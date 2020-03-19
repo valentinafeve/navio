@@ -10,7 +10,7 @@
          Hoy many {{ counter }} did I {{ name }} today?
        </div>
        <div class="">
-         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text" min="0" v-model="goal_data" @click="onClick" @input="validateValueGoalInput()" maxlength="6">
+         <input class="blue" id="inline-full-name" type="text" min="0" v-model="goal_data" @click="onClick" @input="validateValueGoalInput()" maxlength="6">
        </div>
        <div class="">
          <button @click="add_data_to_goal" class="button" :disabled="disableSubmit" type="button" :class="{disabled: disableSubmit}" name="button"> Add data</button>
@@ -48,6 +48,8 @@ export default {
       var goal_data = this.goal_data;
       this.goal_data = '';
       this.addValue(this.id, goal_data);
+      this.disableSubmit = true;
+      this.lastValid = '';
     },
     validateValueGoalInput(){
       const reg = /^([0-9]{1,10})$/
@@ -93,7 +95,7 @@ export default {
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px;
-  background: #fafafa;
+  background: #f3f3fa;
 }
 .goal_card .card input{
   width: 80px;

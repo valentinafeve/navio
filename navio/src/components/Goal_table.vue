@@ -24,7 +24,7 @@
       </b>
       at
       {{ time }}
-      I did 
+      I did
       {{ name }}
       <b>
       {{ value }}
@@ -72,10 +72,10 @@ export default {
     var thisa = this;
     this.getGoals().then((goals)=>{
       for (var goal of goals){
-        if (thisa.name == goal.name){
+        if (thisa.id == goal.id){
           thisa.days = goal.days;
           for(var day of goal.days){
-            if (day.value > thisa.maximum){
+            if (parseFloat(day.value) > parseFloat(thisa.maximum)){
               thisa.maximum = day.value;
             }
           }
@@ -98,16 +98,16 @@ export default {
 .table{
   display: block;
   width: 168px;
-  margin-top: 100px;
-  margin-bottom: 100px;
-  margin-left: -40px;
+  margin-top: 110px;
+  margin-bottom: 130px;
+  margin-left: -60px;
   border-top: 1px solid #efefef;
   border-left: 1px solid #efefef;
   border-right: 1px solid #efefef;
   transform: scale(1, -1) rotate(-90deg);
 }
 .info_panel{
-  background: #dedeff;
+  background: #bedeff;
   border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;

@@ -7,14 +7,20 @@ input {
   border-radius: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  background: #d8deed;
+  background: #fbfdfd;
 }
 input:focus{
   outline: none;
-  -webkit-box-shadow: 0px 0px 4px 0px #c3cadb;
-  -moz-box-shadow: 0px 0px 4px 0px #c3cadb;
-  box-shadow: 0px 0px 4px 0px #c3cadb;
+  -webkit-box-shadow: 0px 0px 2px 0px #c3cadb;
+  -moz-box-shadow: 0px 0px 2px 0px #c3cadb;
+  box-shadow: 0px 0px 2px 0px #c3cadb;
 }
+
+input.blue{
+  background: white;
+  /* background: olive; */
+}
+
 button{
   border: none;
   color: white;
@@ -27,5 +33,5 @@ button{
   padding-right: 30px;
 }
 button.disabled{
-  background: #bacadf;
+  background: #cadaef;
 }

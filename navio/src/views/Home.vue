@@ -3,7 +3,7 @@
   <div v-if="no_goals" class="message">
     You'll see your goals here.
   </div>
-  <GoalTable v-for="goal in goals" :key="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
+  <GoalTable v-for="goal in goals" :key="goal.id" :id="goal.id" :name="goal.name" :counter="goal.counter" :isInverted="goal.inverse">
   </GoalTable>
 </div>
 </template>

@@ -1,11 +1,19 @@
+*:focus{
+  outline: none;
+}
 input {
-  background: yellow;
   border: none;
   padding: 10px;
   border-radius: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  background: #dedeff;
+  background: #d8deed;
+}
+input:focus{
+  outline: none;
+  -webkit-box-shadow: 0px 0px 4px 0px #c3cadb;
+  -moz-box-shadow: 0px 0px 4px 0px #c3cadb;
+  box-shadow: 0px 0px 4px 0px #c3cadb;
 }
 button{
   border: none;

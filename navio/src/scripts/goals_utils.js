@@ -36,6 +36,7 @@ export const goalsUtils = {
         for(var goal of goals){
           if( goal.id == goal_id ){
             var today = new Date();
+            today.setDate(16);
             var updated = false;
             var j = 0;
             for ( var day of goal.days ){

@@ -9,13 +9,13 @@
     <div class="tabs">
       <div class="buttons">
         <div class="button_tab" @click="go_to('more')">
-          <img src="/icons/info.svg" alt="" style="height:25px;">
+          <img src="/icons/info.svg" alt="" style="height:30px;">
         </div>
         <div class="button_tab" @click="go_to('/')">
-          <img src="/icons/home.svg" alt="" style="height:25px;">
+          <img src="/icons/home.svg" alt="" style="height:30px;">
         </div>
         <div class="button_tab" @click="go_to('goals')">
-          <img src="/icons/clock.svg" alt="" style="height:25px;">
+          <img src="/icons/clock.svg" alt="" style="height:30px;">
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@ body{
 }
 .tabs{
   display: block;
-  height: 60px;
+  height: 80px;
   background: #fbfbfb;
   bottom: 0;
   width: inherit;
@@ -114,7 +114,7 @@ body{
   display: inline-block;
   padding-right: 20px;
   padding-left: 20px;
-  padding-top: 10px;
+  padding-top: 25px;
   padding-bottom: 10px;
   width: 10%;
 }

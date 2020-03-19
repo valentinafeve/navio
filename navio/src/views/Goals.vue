@@ -6,10 +6,10 @@
     <div v-if="inverted_goal">
       <div class="title">I promise not to...</div>
       <div class="subcard">
-        <input placeholder="smoke" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name">
+        <input placeholder="smoke" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_name" type="text" v-model="goal_name" maxlength="30">
       </div>
       <div class="subcard">
-        any <input placeholder="cigarettes" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter">
+        any <input placeholder="cigarettes" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="id_goal_counter" type="text" value="Jane Doe" v-model="goal_counter" maxlength="30">
       </div>
     </div>
     <div v-else>
@@ -97,9 +97,9 @@ export default {
       var date = new Date();
       var goal = {
         id: this.generateId(),
-        name: this.goal_name,
+        name: this.goal_name.toLowerCase(),
+        counter: this.goal_counter.toLowerCase(),
         created : date.getDate(),
-        counter: this.goal_counter,
         inverse: this.inverted_goal,
         days:[
         ],
@@ -125,7 +125,7 @@ export default {
 }
 .goals .card{
   padding-top: 40px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   padding-left: 20px;
   padding-right: 20px;
   background: #f0f5fc;

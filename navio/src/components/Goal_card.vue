@@ -17,7 +17,7 @@
        </div>
      </div>
      <div class="option_buttons" :class="{visible: buttons_visible}">
-      <div class="button delete_button" @click="button_delete_onClick">
+      <div class="delete_button" @click="button_delete_onClick">
         <img src="icons/bin.svg" alt="" style="height:30px;">
       </div>
       <!-- <div class="button delete_button" @click="button_delete_onClick">
@@ -81,14 +81,16 @@ export default {
 }
 .goal_card .card{
   padding: 20px;
-  width: 80%;
   margin: 0 auto;
   border-radius: 10px;
-  margin-top: 5px;
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
   margin-bottom: 10px;
+  background: #fafafa;
 }
 .goal_card .card input{
-  width: 95%;
+  width: 80px;
 }
 .goal_card .card button{
   margin-top: 20px;
@@ -103,20 +105,19 @@ export default {
 .goal_card .option_buttons{
   display: none;
 }
-.goal_card .button.delete_button{
+.goal_card .delete_button{
   margin: 0 auto;
-  margin-top: 5px;
-  margin-left: 10px;
-  background: #cd2323;
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  padding-top: 13px;
   display: inline-block;
+  background: #cd2323;
+  position: relative;
 }
-.goal_card .button.delete_button img{
-  margin: 0 auto;
-  height: 100%;
+.goal_card .delete_button img{
+  position: absolute;
+  top: 13px;
+  left: 15px;
 }
 .goal_card .visible{
   display: block;
